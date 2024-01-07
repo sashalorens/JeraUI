@@ -16,28 +16,40 @@ namespace JeraUI
         {
             InitializeComponent();
             this.components = new System.ComponentModel.Container();
+            // start minimized
+            this.WindowState = FormWindowState.Minimized;
+            ShowInTaskbar = false;
 
             // Set up how the form should be displayed.
             // this.ClientSize = new System.Drawing.Size(292, 266);
-            this.Text = "Notify Icon Example";
+            this.Text = "Jera Settings";
 
             // Create the NotifyIcon.
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
 
             // The Icon property sets the icon that will appear
             // in the systray for this application.
-            notifyIcon1.Icon = new Icon("../../../logoIdle.ico");
+            trayIcon.Icon = new Icon("../../../logoIdle.ico");
 
             // The Text property sets the text that will be displayed,
             // in a tooltip, when the mouse hovers over the systray icon.
-            notifyIcon1.Text = "Form1 (NotifyIcon example)";
-            notifyIcon1.Visible = true;
-            notifyIcon1.ContextMenuStrip = contextMenuStrip1;
+            trayIcon.Text = "Form1 (NotifyIcon example)";
+            trayIcon.Visible = true;
+            trayIcon.ContextMenuStrip = contextMenuStrip1;
+
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormIsClosing);
         }
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
 
+        }
+
+        private void FormIsClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.WindowState = FormWindowState.Minimized;
+            ShowInTaskbar = false;
         }
     }
 }
