@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JeraKeyboard;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,9 @@ namespace JeraUI
 {
     public partial class Form1 : Form
     {
-        public Form1()
+        public Form1(IJeraKB jeraKB)
         {
+            this.jeraKB = jeraKB;
             InitializeComponent();
             this.components = new System.ComponentModel.Container();
             // start minimized
@@ -35,7 +37,7 @@ namespace JeraUI
             // in a tooltip, when the mouse hovers over the systray icon.
             trayIcon.Text = "Form1 (NotifyIcon example)";
             trayIcon.Visible = true;
-            trayIcon.ContextMenuStrip = contextMenuStrip1;
+            trayIcon.ContextMenuStrip = trayMenu;
 
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormIsClosing);
         }
@@ -50,6 +52,21 @@ namespace JeraUI
             e.Cancel = true;
             this.WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+            MessageBox.Show("button1 was clicked");
         }
     }
 }
