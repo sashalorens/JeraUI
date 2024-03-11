@@ -68,5 +68,10 @@ namespace JeraUI
         {
             MessageBox.Show("button1 was clicked");
         }
+
+        private void browseInput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace JeraUI
         static void Main()
         {
             jkb = new JeraKB();
-            jkb.Init();
+            jkb.Init(Properties.Settings.Default.ConfigPath);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

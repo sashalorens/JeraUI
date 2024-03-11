@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace JeraUI
 {
@@ -68,6 +69,7 @@ namespace JeraUI
             comboBox2 = new ComboBox();
             openFileDialog1 = new OpenFileDialog();
             browseButton = new Button();
+            browseInput = new TextBox();
             trayMenu.SuspendLayout();
             SuspendLayout();
             // 
@@ -164,19 +166,29 @@ namespace JeraUI
             // 
             // browseButton
             // 
-            browseButton.Location = new Point(550, 95);
+            browseButton.Location = new Point(655, 95);
             browseButton.Name = "browseButton";
             browseButton.Size = new Size(75, 23);
             browseButton.TabIndex = 5;
-            browseButton.Text = "button1";
+            browseButton.Text = "Browse...";
             browseButton.UseVisualStyleBackColor = true;
             browseButton.Click += onBrowseClick;
+            // 
+            // browseInput
+            // 
+            browseInput.Location = new Point(289, 95);
+            browseInput.Name = "browseInput";
+            browseInput.ReadOnly = true;
+            browseInput.Size = new Size(372, 23);
+            browseInput.TabIndex = 6;
+            browseInput.Text = Properties.Settings.Default.ConfigPath ?? "";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2776, 619);
+            Controls.Add(browseInput);
             Controls.Add(browseButton);
             Controls.Add(comboBox2);
             Controls.Add(labelTo);
@@ -200,11 +212,13 @@ namespace JeraUI
 
         private void onStartClick(object sender, EventArgs e)
         {
+            jeraKB.Toggle(true);
             trayIcon.Icon = new Icon("../../../logoOn.ico");
         }
 
         private void onPauseClick(object sender, EventArgs e)
         {
+            jeraKB.Toggle(false);
             trayIcon.Icon = new Icon("../../../logoIdle.ico");
         }
 
@@ -221,20 +235,15 @@ namespace JeraUI
 
         private void onBrowseClick(object sender, EventArgs e)
         {
-            Debug.WriteLine("Clicked");
             int size = -1;
-            DialogResult result = openFileDialog1.ShowDialog(); // Show the dialog.
-            if (result == DialogResult.OK) // Test result.
+            DialogResult result = openFileDialog1.ShowDialog();
+            if (result == DialogResult.OK)
             {
                 string file = openFileDialog1.FileName;
-                try
-                {
-                    string text = File.ReadAllText(file);
-                    size = text.Length;
-                }
-                catch (IOException)
-                {
-                }
+                Properties.Settings.Default.ConfigPath = file;
+                Properties.Settings.Default.Save();
+                jeraKB.OverridePath(file);
+                browseInput.Text = file;
             }
             Console.WriteLine(size); // <-- Shows file size in debugging mode.
             Console.WriteLine(result); // <-- For debugging use.
@@ -256,6 +265,7 @@ namespace JeraUI
         private ComboBox comboBox2;
         private OpenFileDialog openFileDialog1;
         private Button browseButton;
+        private TextBox browseInput;
     }
 }
 
